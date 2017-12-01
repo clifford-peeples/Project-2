@@ -65,9 +65,24 @@ getLength:
 	syscall 
 	
 	#$a0 now has the length of the string
- 
+	
 
-##Subprogam 1: convert string to decimal number##
+##SUBPROGRAM2 TO GET WHOLE STRING AND CONVERT TO DECIMAL##
+ subprogram2: #loop for conversion
+	lb $t1,0($a0) #start searching each byte
+	beq $t1,0,exitsubprogram2
+	beq $t1,10,exitsubprogram2
+	jal subprogram1
+	addi $a0,$a0,1 #move to the next byte
+	sub $t5,$t5,1 #incrementing the length - 1
+	j subprogram2
+	
+	exitsubprogram2:
+	move $s3,$t3 #save the overall value
+	bgt $s0,7,negnum
+	jr $ra
+
+##Subprogram 1: convert string to decimal number##
 subprogam1:
 	#Checking if the byte falls into the ranges then will send byte to designated loop
 	blt $t1,48, Invalid 
@@ -84,7 +99,23 @@ subprogam1:
 	sllv $t2,$t1,$t4 #Finding the actual value of the Hex number
 	add $t3,$t3,$t2 #overall num is overall num plus value found in this loop
 	jr $ra
-
+	
+	Uppercase:
+	sub $t1,$t1,55 #subtract 55 to get the decimal number of the byte being checked
+	#addi $t1, $t1, 10 #Adding 10
+	sll $t4,$t5,2 #shifting for the exponent value
+	sllv $t2,$t1,$t4 #Finding the actual value of the Hex number
+	add $t3,$t3,$t2 #overall num = overall num plus value found in this loop
+	jr $ra
+	
+	Lowercase:
+	sub $t1,$t1,97 #subtract 87 to get the decimal number of the byte being checked
+	addi $t1, $t1, 10 #Add 10 for value
+	sll $t4,$t5,2 #shifting for the exponent value
+	sllv $t2,$t1,$t4 #Finding the actual value of the Hex number
+	add $t3,$t3,$t2 #overall num = overall num plus value found in this loop
+	jr $ra
+	
 	Invalid: #print invalid message and exit the loop
  	la $a0, invalid #print length premessage
 	li $v0, 4 #opcode to print a string
