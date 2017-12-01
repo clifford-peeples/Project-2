@@ -6,8 +6,8 @@
 
 userInput: .space 9 #8 digit hexidecimal 
 prompt: .asciiz "Enter string: " 
-NaN: .asciiz "\n The string you entered was "
-invalid: .asciiz "\nInvalid hexadecimal number.\n"
+tooLarge: .asciiz "too large"
+invalid: .asciiz "NaN"
 useroutput: .asciiz " "
 stringlenmess: .asciiz "\n The length of this string is: "
 
@@ -17,9 +17,9 @@ stringlenmess: .asciiz "\n The length of this string is: "
 main: 
 
 #storing user input
-    li $v0, 8 #op code for getting user input for a string
+    li $v0, 8 #get user input for a string
 	la $a0, userinput #loads the address of space and stores it into $a0
-	la $a1, 9 #gets the length of $a1 so theres no overflow
+	la $a1, 9 #gets the length of $a1 to prevent overflow
 	syscall 
 
 #Converting Userin into Decimal
@@ -42,3 +42,27 @@ exit:
 	syscall #exits program
 	
 
+#FUNCTIONS USED IN THE MAIN FUNCTION
+
+##Finding Length of String##
+#li $t2,0 #initialize count to zero
+getLength:
+ lb $t0,0($a0)
+ beq $t0,0,exitgetLength
+ beq $t0,10,exitgetLength
+ addi $a0, $a0, 1
+ addi $t2,$t2, 1
+ j getLength
+ exitgetLength:
+ move $a0, $t2 
+ jr $ra
+ #prints user input length
+    la $a0, stringlenmess #print length premessage
+	li $v0, 4 #opcode to print a string
+	syscall
+	
+	li $v0, 1 #opcode to print the length of the string
+	syscall 
+	
+	#$a0 now has the length of the string
+ 
