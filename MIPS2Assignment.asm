@@ -66,3 +66,27 @@ getLength:
 	
 	#$a0 now has the length of the string
  
+
+##Subprogam 1: convert string to decimal number##
+subprogam1:
+	#Checking if the byte falls into the ranges then will send byte to designated loop
+	blt $t1,48, Invalid 
+	blt $t1,58, Decimal
+	blt $t1,65, Invalid
+	blt $t1,71, Uppercase
+	blt $t1,97, Invalid
+	blt $t1,103, Lowercase
+	bgt $t1,102, Invalid
+	
+	Decimal:
+	sub $t1,$t1,48 #subtract 48 to get the decimal number of the byte being checked $t1 is ripped char
+	sll $t4,$t5,2 #shifting for the exponent value
+	sllv $t2,$t1,$t4 #Finding the actual value of the Hex number
+	add $t3,$t3,$t2 #overall num is overall num plus value found in this loop
+	jr $ra
+
+
+	
+
+	
+	
