@@ -81,6 +81,23 @@ getLength:
 	move $s3,$t3 #save the overall value
 	bgt $s0,7,negnum
 	jr $ra
+#Accounting for 2 compliment
+	negnum:
+	li $t7,10000
+	move $t3,$s3
+	divu $t3,$t3,$t7
+	
+	mflo $t7
+	move $a0,$t7
+	li $v0,1
+	syscall
+	
+	mfhi $t7
+	move $a0,$t7
+	li $v0,1
+	syscall
+	
+	jr $ra
 
 ##Subprogram 1: convert string to decimal number##
 subprogam1:
