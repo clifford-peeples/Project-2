@@ -85,6 +85,11 @@ subprogam1:
 	add $t3,$t3,$t2 #overall num is overall num plus value found in this loop
 	jr $ra
 
+	Invalid: #print invalid message and exit the loop
+ 	la $a0, invalid #print length premessage
+	li $v0, 4 #opcode to print a string
+	syscall
+	jr $ra #RETURNS VALUE TO SUBP2
 
 	
 
