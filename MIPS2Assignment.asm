@@ -9,7 +9,6 @@ prompt: .asciiz "Enter string: "
 tooLarge: .asciiz "too large"
 invalid: .asciiz "NaN"
 useroutput: .asciiz " "
-stringlenmess: .asciiz "\n The length of this string is: "
 commaBreak: .asciiz ","
 
 .text
@@ -56,17 +55,7 @@ getLength:
 exitgetLength:
         move $a0, $t2 
         jr $ra
- #prints user input length
-        la $a0, stringlenmess #print length premessage
-	li $v0, 4 #opcode to print a string
-	syscall
-	
-	li $v0, 1 #opcode to print the length of the string
-	syscall 
-	
-	#$a0 now has the length of the string
-	
-
+        
 ##Subprogram 2: Convert string to decimal number##
  subprogram2: #loop for conversion
 	lb $t1,0($a0) #start searching each byte
