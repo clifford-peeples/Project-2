@@ -18,7 +18,7 @@ main:
 
 #storing user input
     li $v0, 8 #get user input for a string
-	la $a0, userinput #loads the address of space and stores it into $a0
+	la $a0, userInput #loads the address of space and stores it into $a0
 	la $a1, 9 #gets the length of $a1 to prevent overflow
 	syscall 
 
@@ -31,7 +31,7 @@ main:
  li $t0,0 #initialize i for loop
  li $t3,0 #initialize number for output
  li $t2,0
- la $a0,userinput #loading the users input
+ la $a0,userInput #loading the users input
  jal subprogram2 #Function call to actually convert the integer
 printval:#printing overall value
 	 move $a0,$s3
@@ -67,7 +67,7 @@ getLength:
 	#$a0 now has the length of the string
 	
 
-##SUBPROGRAM2 TO GET WHOLE STRING AND CONVERT TO DECIMAL##
+##Subprogram 2: Convert string to decimal number##
  subprogram2: #loop for conversion
 	lb $t1,0($a0) #start searching each byte
 	beq $t1,0,exitsubprogram2
@@ -137,9 +137,14 @@ subprogam1:
  	la $a0, invalid #print length premessage
 	li $v0, 4 #opcode to print a string
 	syscall
-	jr $ra #RETURNS VALUE TO SUBP2
+	jr $ra #Retruns to Subprogram 2
 
+subprogram3:
+	li    $v0, 36   #System call code for printing unsigned integers
+	li    $a0, userInput    #integer to print
+	syscall
 	
+	jal subprogram1
 
 	
 	
